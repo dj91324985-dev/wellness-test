@@ -1,0 +1,313 @@
+<style>
+/* 아임웹 wrapper 완전 초기화 */
+.imweb-widget-code { padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
+.imweb-widget-code > div { padding: 0 !important; margin: 0 !important; width: 100% !important; }
+
+/* 유형테스트 wrapper */
+#wt-outer {
+  background: #f7f6f2;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px 80px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f7f6f2; color: #1a1a1a; }
+.wrap { max-width: 520px; width: 100%; }
+.badge { display: inline-block; background: #f0f7f4; color: #2d5a4e; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
+.header { text-align: center; margin-bottom: 2rem; }
+.title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.sub { font-size: 13px; color: #888; }
+.progress { margin-bottom: 1.75rem; }
+.progress-row { display: flex !important; justify-content: space-between !important; align-items: center !important; font-size: 12px; color: #888; margin-bottom: 8px; width: 100%; }
+.back-btn { background: none; border: none; cursor: pointer; font-size: 13px; color: #888; padding: 0; }
+.back-btn:disabled { opacity: 0.3; cursor: default; }
+.bar-bg { height: 2px !important; max-height: 2px !important; background: #e8e4dc; border-radius: 4px; align-self: center; overflow: hidden; }
+.bar { height: 4px; background: #2d5a4e; border-radius: 4px; transition: width 0.4s; }
+.category { font-size: 11px; color: #4a8c6e; font-weight: 600; letter-spacing: 1px; margin-bottom: 8px; }
+.question { font-size: 16px; font-weight: 700; line-height: 1.65; margin-bottom: 1.25rem; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 14px; border: 1.5px solid #e8e4dc; background: white; cursor: pointer; font-size: 14px; text-align: left; line-height: 1.5; width: 100%; }
+.opt:hover { border-color: #4a8c6e; background: #f6fbf8; }
+.opt-icon { width: 28px; height: 28px; border-radius: 50%; background: #f0f7f4; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.result { display: none; }
+.result-top { text-align: center; padding: 1.75rem 1.25rem 1.25rem; background: #f0f7f4; border-radius: 18px; margin-bottom: 1rem; }
+.result-top.good { background: #eaf3f0; }
+.result-label { font-size: 12px; color: #4a8c6e; font-weight: 600; letter-spacing: 1px; margin-bottom: 8px; }
+.result-type { font-size: 22px; font-weight: 700; color: #1a3d2e; margin-bottom: 8px; }
+.result-desc { font-size: 13px; color: #4a6e5a; line-height: 1.7; }
+.card { border-radius: 14px; border: 1.5px solid #e8e4dc; background: white; padding: 1rem 1.25rem; margin-bottom: 10px; }
+.card-title { font-size: 12px; color: #888; font-weight: 600; margin-bottom: 10px; }
+.card-item { font-size: 14px; padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+.dot-green { width: 6px; height: 6px; border-radius: 50%; background: #4a8c6e; flex-shrink: 0; }
+.dot-amber { width: 6px; height: 6px; border-radius: 50%; background: #c47c3f; flex-shrink: 0; }
+.cta { background: #2d5a4e; color: white; border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; border: none; width: 100%; cursor: pointer; }
+.cta.soft { background: #f0f7f4; }
+.cta-sub { font-size: 12px; opacity: 0.7; margin-bottom: 4px; }
+.cta.soft .cta-sub { color: #4a6e5a; opacity: 1; }
+.cta-main { font-size: 15px; font-weight: 700; }
+.cta.soft .cta-main { color: #2d5a4e; }
+.restart-btn { width: 100%; padding: 12px; font-size: 14px; cursor: pointer; border-radius: 12px; color: #888; background: transparent; border: 1.5px solid #e8e4dc; }
+.emoji { font-size: 36px; margin-bottom: 8px; }
+.good-msg { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 10px; text-align: center; border: 1.5px solid #c8e6d8; }
+.good-title { font-size: 15px; font-weight: 700; color: #2d5a4e; margin-bottom: 6px; }
+.good-desc { font-size: 13px; color: #4a6e5a; line-height: 1.7; }
+
+</style>
+
+<div id="wt-outer">
+<div class="wrap">
+
+  <div id="quiz-view">
+    <div class="header">
+      <div class="badge">웰니스 유형 테스트</div>
+      <div class="title">내 몸의 약점은 어디일까?</div>
+      <div class="sub">16가지 질문으로 알아보는 나의 웰니스 유형</div>
+    </div>
+    <div class="progress">
+      <div class="progress-row">
+        <button class="back-btn" id="back-btn" onclick="goBack()" disabled>← 이전</button>
+        <div class="bar-bg" style="flex:1; margin: 0 10px;"><div class="bar" id="prog-bar" style="width:6.25%"></div></div>
+        <span id="q-count">1 / 16</span>
+      </div>
+    </div>
+    <div class="category" id="q-category"></div>
+    <div class="question" id="q-text"></div>
+    <div class="options" id="q-options"></div>
+  </div>
+
+  <div class="result" id="result-view">
+    <div class="result-top" id="r-top">
+      <div class="emoji" id="r-emoji"></div>
+      <div class="result-label" id="r-label"></div>
+      <div class="result-type" id="r-type"></div>
+      <div class="result-desc" id="r-desc"></div>
+    </div>
+    <div id="r-good-msg" style="display:none" class="good-msg">
+      <div class="good-title" id="r-good-title"></div>
+      <div class="good-desc" id="r-good-desc"></div>
+    </div>
+    <div id="r-cards" style="display:none">
+      <div class="card">
+        <div class="card-title">주요 증상</div>
+        <div id="r-symptoms"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">이 타입의 주요 문제 가능성</div>
+        <div id="r-issues"></div>
+      </div>
+    </div>
+    <button class="cta" id="r-cta" onclick="window.location.href='https://wellnesspt.kr'">
+      <div class="cta-sub" id="r-cta-sub"></div>
+      <div class="cta-main" id="r-cta-main"></div>
+    </button>
+    <button class="restart-btn" onclick="restart()">↩ 다시 테스트하기</button>
+  </div>
+
+</div>
+</div>
+
+<script>
+var qs = [
+  {cat:"💤 수면", text:"아침에 일어날 때 어떤가요?", opts:[
+    {t:"몸이 너무 무겁고 일어나기 싫다", s:{cortisol:2,mito:1}},
+    {t:"일어나긴 하는데 개운하지 않다", s:{sleep:2,mito:1}},
+    {t:"잠들기가 어려워 늦게 잠든다", s:{cortisol:2,sleep:1}},
+    {t:"잘 자고 개운하게 일어난다", s:{optimized:2,asset:1}}
+  ]},
+  {cat:"💤 수면", text:"밤 11시 이후에 오히려 정신이 맑아지거나 각성되는 편인가요?", opts:[
+    {t:"거의 매일 그렇다", s:{cortisol:3,sleep:1}},
+    {t:"가끔 그런 날이 있다", s:{cortisol:1}},
+    {t:"저녁이 되면 피곤해서 일찍 잔다", s:{mito:1,autonomic:1}},
+    {t:"일정한 시간에 졸리고 잘 잔다", s:{optimized:2}}
+  ]},
+  {cat:"⚡ 에너지", text:"하루 중 에너지가 가장 떨어지는 때는 언제인가요?", opts:[
+    {t:"오전부터 이미 피곤하다", s:{mito:2,cortisol:1}},
+    {t:"점심 후 오후 2-3시에 급격히 피곤해진다", s:{blood_sugar:3,mito:1}},
+    {t:"저녁이 되면 힘이 빠진다", s:{mito:1,autonomic:1}},
+    {t:"크게 에너지 기복이 없다", s:{optimized:2,asset:1}}
+  ]},
+  {cat:"⚡ 에너지", text:"운동을 해도 몸이 잘 변하지 않거나 운동 후 오히려 더 피곤하다고 느낀 적 있나요?", opts:[
+    {t:"자주 그런 느낌이다", s:{mito:3,autonomic:1}},
+    {t:"가끔 그런 적 있다", s:{mito:1,asset:1}},
+    {t:"운동 효과를 잘 느끼는 편이다", s:{optimized:2}},
+    {t:"운동을 잘 안 한다", s:{blood_sugar:1}}
+  ]},
+  {cat:"🍽 식사·혈당", text:"단 음식이나 빵, 떡 같은 탄수화물이 자주 당기나요?", opts:[
+    {t:"거의 매일 강하게 당긴다", s:{blood_sugar:3,cortisol:1}},
+    {t:"스트레스 받을 때 특히 당긴다", s:{cortisol:2,blood_sugar:1}},
+    {t:"가끔 당기는 편이다", s:{asset:1}},
+    {t:"거의 당기지 않는다", s:{optimized:2}}
+  ]},
+  {cat:"🍽 식사·혈당", text:"식사 후 졸리거나 급격히 피곤해지는 편인가요?", opts:[
+    {t:"거의 매번 그렇다", s:{blood_sugar:3,mito:1}},
+    {t:"가끔 그런 편이다", s:{blood_sugar:1}},
+    {t:"별로 그런 편이 아니다", s:{optimized:1,asset:1}},
+    {t:"식사를 불규칙하게 해서 잘 모르겠다", s:{blood_sugar:1,cortisol:1}}
+  ]},
+  {cat:"🫁 소화·장", text:"소화와 관련해서 평소 어떤가요?", opts:[
+    {t:"변비가 잦거나 장이 늘 불편하다", s:{gut:2,autonomic:2}},
+    {t:"설사와 변비가 번갈아 온다", s:{gut:3}},
+    {t:"가스가 자주 차거나 더부룩하다", s:{gut:2,histamine:1}},
+    {t:"소화는 잘 되는 편이다", s:{optimized:1,asset:1}}
+  ]},
+  {cat:"🫁 소화·장", text:"특정 음식을 먹었을 때 속이 불편하거나 피부 반응이 오는 경우가 있나요?", opts:[
+    {t:"자주 있다 (발효식품, 와인, 치즈 등)", s:{histamine:3,gut:1}},
+    {t:"가끔 있는데 어떤 음식인지 모르겠다", s:{histamine:1,gut:1}},
+    {t:"특정 음식은 없고 과식할 때만 불편하다", s:{blood_sugar:1}},
+    {t:"특별히 없다", s:{optimized:1,asset:1}}
+  ]},
+  {cat:"🌿 스트레스·신경", text:"스트레스를 받을 때 몸에서 가장 먼저 나타나는 반응은?", opts:[
+    {t:"피부 트러블이 생기거나 악화된다", s:{inflammation:2,gut:1}},
+    {t:"소화가 안 되거나 배가 아프다", s:{gut:2,autonomic:1}},
+    {t:"잠을 못 자거나 심장이 두근거린다", s:{cortisol:2,autonomic:1}},
+    {t:"크게 몸에 영향이 없다", s:{optimized:2,asset:1}}
+  ]},
+  {cat:"🌿 스트레스·신경", text:"평소 긴장을 잘 풀지 못하거나 쉬어도 쉰 것 같지 않은 느낌이 있나요?", opts:[
+    {t:"항상 그런 편이다", s:{autonomic:3,cortisol:1}},
+    {t:"자주 그런 편이다", s:{autonomic:2}},
+    {t:"가끔 그런 편이다", s:{asset:1}},
+    {t:"휴식을 취하면 잘 회복된다", s:{optimized:2}}
+  ]},
+  {cat:"✨ 피부·면역", text:"피부 트러블이나 알레르기가 있나요?", opts:[
+    {t:"여드름·트러블이 자주 생긴다", s:{inflammation:2,gut:1}},
+    {t:"비염이나 알레르기 반응이 잦다", s:{histamine:3}},
+    {t:"두드러기나 가려움이 종종 생긴다", s:{histamine:2,inflammation:1}},
+    {t:"피부나 알레르기 문제가 없다", s:{optimized:1,asset:1}}
+  ]},
+  {cat:"✨ 피부·면역", text:"감기에 자주 걸리거나 한번 걸리면 오래 가는 편인가요?", opts:[
+    {t:"자주 걸리고 회복도 느리다", s:{gut:2,mito:1}},
+    {t:"가끔 걸리는 편이다", s:{asset:1}},
+    {t:"잘 안 걸리는 편이다", s:{optimized:2}},
+    {t:"걸려도 빨리 낫는다", s:{optimized:1,asset:1}}
+  ]},
+  {cat:"🌸 여성 건강", text:"(여성의 경우) 생리통이나 생리전 증상이 있나요?", opts:[
+    {t:"생리통이 심해서 진통제를 먹는다", s:{autonomic:2,inflammation:2}},
+    {t:"생리 전 붓거나 감정 기복이 심하다", s:{cortisol:2,blood_sugar:1}},
+    {t:"약간 불편하지만 일상생활에 지장은 없다", s:{asset:1}},
+    {t:"해당 없음 또는 문제없다", s:{optimized:1}}
+  ]},
+  {cat:"🌸 여성 건강", text:"체중이 잘 늘거나 붓는 편인가요?", opts:[
+    {t:"먹지 않아도 잘 붓고 살이 잘 찐다", s:{autonomic:2,blood_sugar:1}},
+    {t:"스트레스 받으면 유독 붓거나 찐다", s:{cortisol:2}},
+    {t:"가끔 붓는 날이 있다", s:{asset:1}},
+    {t:"체중·부종 문제가 없다", s:{optimized:2}}
+  ]},
+  {cat:"💊 영양·관리", text:"영양제나 건강 관리를 꾸준히 하고 있나요?", opts:[
+    {t:"열심히 하는데 효과를 잘 모르겠다", s:{gut:1,mito:1}},
+    {t:"일시적으로 좋아졌다가 다시 원래대로", s:{cortisol:1,blood_sugar:1}},
+    {t:"꾸준히 잘 챙기고 효과도 느낀다", s:{optimized:2,asset:2}},
+    {t:"별로 시도해본 적 없다", s:{asset:1}}
+  ]},
+  {cat:"💊 영양·관리", text:"전반적인 건강 상태를 스스로 평가한다면?", opts:[
+    {t:"많이 안 좋은 것 같다", s:{mito:2,gut:1}},
+    {t:"나쁘지는 않은데 뭔가 찜찜하다", s:{inflammation:1,autonomic:1}},
+    {t:"관리는 하고 있는데 더 최적화하고 싶다", s:{asset:2,optimized:1}},
+    {t:"건강한 편이고 잘 유지되고 있다", s:{optimized:3}}
+  ]}
+];
+
+var types = {
+  cortisol: {good:false, emoji:"🌙", name:'"코르티솔 과부하형"', label:"높은 확률로 당신은", desc:"낮에 처지고 밤에 각성되는, 호르몬 리듬이 뒤집힌 타입이에요.", symptoms:["만성피로","저녁 각성","수면 장애"], issues:["코르티솔 리듬 역전","장 점막 손상 진행","마그네슘 고갈"]},
+  gut: {good:false, emoji:"🌿", name:'"장-면역 불균형형"', label:"높은 확률로 당신은", desc:"장이 보내는 신호를 몸 전체가 받고 있는 타입이에요.", symptoms:["소화 불편","잦은 트러블","면역 과반응"], issues:["장내 dysbiosis","장 투과성 증가","전신 염증 신호"]},
+  autonomic: {good:false, emoji:"🫀", name:'"자율신경 긴장형"', label:"높은 확률로 당신은", desc:"쉬어도 쉰 것 같지 않은, 몸이 긴장을 못 푸는 타입이에요.", symptoms:["만성 변비","생리통","자고 나도 피곤함"], issues:["교감신경 만성 긴장","장 연동운동 저하","회복 효율 저하"]},
+  blood_sugar: {good:false, emoji:"🍯", name:'"혈당 불안정형"', label:"높은 확률로 당신은", desc:"오후 피곤함과 단 음식 갈망이 반복되는 타입이에요.", symptoms:["오후 급격한 피로","단 음식 강한 갈망","식후 졸림"], issues:["인슐린 저항 초기","에너지 대사 불안정","부신 과부하"]},
+  mito: {good:false, emoji:"⚡", name:'"미토콘드리아 기능 저하형"', label:"높은 확률로 당신은", desc:"특별한 문제는 없는데, 왜 이렇게 피곤한지 모르겠는 타입이에요.", symptoms:["운동해도 변화 없음","만성 무기력","뇌 안개"], issues:["세포 에너지 생산 저하","산화 스트레스 누적","영양소 흡수 문제"]},
+  histamine: {good:false, emoji:"🌸", name:'"히스타민 과민형"', label:"높은 확률로 당신은", desc:"내 몸이 과잉반응하고 있다는 신호를 보내는 타입이에요.", symptoms:["비염·알레르기 반응","두드러기","특정 음식 민감"], issues:["DAO 효소 저하","장 점막 손상","히스타민 버킷 과부하"]},
+  inflammation: {good:false, emoji:"🔥", name:'"염증 루프형"', label:"높은 확률로 당신은", desc:"피부가 몸속 문제를 대신 말해주고 있는 타입이에요.", symptoms:["피부 트러블","두피 문제","스트레스 시 악화"], issues:["장-피부 염증 연결","전신 염증 사이토카인","항산화 방어 저하"]},
+  sleep: {good:false, emoji:"🌙", name:'"수면 리듬 역전형"', label:"높은 확률로 당신은", desc:"자도 잔 것 같지 않은, 회복이 안 되는 수면의 타입이에요.", symptoms:["잠들기 어려움","새벽 각성","아침 극도 피로"], issues:["멜라토닌 분비 지연","코르티솔 야간 잔류","회복 수면 부족"]},
+  asset: {good:true, emoji:"🌱", name:'"건강관리 우수형"', label:"당신은", desc:"지금까지 꾸준히 잘 관리해온 타입이에요. 그 노력이 몸에 쌓이고 있어요.", goodTitle:"지금까지 정말 잘 해왔어요 👏", goodDesc:"큰 문제 없이 건강을 유지하고 있다는 건 쉬운 일이 아니에요. 지금의 좋은 습관을 유지하면서, 내 몸에 더 정밀하게 맞는 관리법을 찾으면 훨씬 더 나아질 수 있어요."},
+  optimized: {good:true, emoji:"✨", name:'"웰니스 최적화형"', label:"당신은", desc:"건강 관리를 잘 하고 있는 타입이에요. 지금 패턴을 더 정밀하게 튜닝할 준비가 된 상태예요.", goodTitle:"건강 관리, 이미 잘 하고 있어요 ✨", goodDesc:"전반적으로 균형이 잡혀 있어요. 지금의 좋은 상태를 유지하면서 개인 맞춤 영양과 루틴을 더해가면, 지금보다 훨씬 더 좋아질 수 있어요."}
+};
+
+var cur = 0;
+var hist = [];
+var sc = {cortisol:0, gut:0, autonomic:0, blood_sugar:0, mito:0, histamine:0, inflammation:0, sleep:0, asset:0, optimized:0};
+
+function render() {
+  var q = qs[cur];
+  document.getElementById('q-count').textContent = (cur+1) + ' / ' + qs.length;
+  document.getElementById('prog-bar').style.width = (((cur+1)/qs.length)*100) + '%';
+  document.getElementById('q-category').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.text;
+  var bb = document.getElementById('back-btn');
+  bb.disabled = cur === 0;
+  bb.style.opacity = cur === 0 ? '0.3' : '1';
+  var icons = ['🅐','🅑','🅒','🅓'];
+  var c = document.getElementById('q-options');
+  c.innerHTML = '';
+  for (var i = 0; i < q.opts.length; i++) {
+    (function(opt, idx) {
+      var btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.innerHTML = '<span class="opt-icon">' + icons[idx] + '</span><span>' + opt.t + '</span>';
+      btn.onclick = function() {
+        hist.push({q: cur, s: opt.s});
+        var keys = Object.keys(opt.s);
+        for (var k = 0; k < keys.length; k++) sc[keys[k]] += opt.s[keys[k]];
+        cur++;
+        if (cur < qs.length) render(); else showResult();
+      };
+      c.appendChild(btn);
+    })(q.opts[i], i);
+  }
+}
+
+function goBack() {
+  if (!hist.length) return;
+  var last = hist.pop();
+  var keys = Object.keys(last.s);
+  for (var k = 0; k < keys.length; k++) sc[keys[k]] -= last.s[keys[k]];
+  cur = last.q;
+  render();
+}
+
+function showResult() {
+  var entries = Object.keys(sc).map(function(k) { return [k, sc[k]]; });
+  entries.sort(function(a,b) { return b[1]-a[1]; });
+  var top = entries[0][0];
+  var t = types[top];
+  document.getElementById('quiz-view').style.display = 'none';
+  document.getElementById('result-view').style.display = 'block';
+  document.getElementById('r-top').className = 'result-top' + (t.good ? ' good' : '');
+  document.getElementById('r-emoji').textContent = t.emoji;
+  document.getElementById('r-label').textContent = t.label;
+  document.getElementById('r-type').textContent = t.name;
+  document.getElementById('r-desc').textContent = t.desc;
+  var cta = document.getElementById('r-cta');
+  if (t.good) {
+    document.getElementById('r-good-msg').style.display = 'block';
+    document.getElementById('r-good-title').textContent = t.goodTitle;
+    document.getElementById('r-good-desc').textContent = t.goodDesc;
+    document.getElementById('r-cards').style.display = 'none';
+    cta.className = 'cta soft';
+    document.getElementById('r-cta-sub').textContent = '더 정밀하게 내 몸을 알고 싶다면';
+    document.getElementById('r-cta-main').textContent = '→ 웰니스PT 상담 신청';
+  } else {
+    document.getElementById('r-good-msg').style.display = 'none';
+    document.getElementById('r-cards').style.display = 'block';
+    var sym = ''; for (var i=0; i<t.symptoms.length; i++) sym += '<div class="card-item"><span class="dot-green"></span>' + t.symptoms[i] + '</div>';
+    document.getElementById('r-symptoms').innerHTML = sym;
+    var iss = ''; for (var i=0; i<t.issues.length; i++) iss += '<div class="card-item"><span class="dot-amber"></span>' + t.issues[i] + '</div>';
+    document.getElementById('r-issues').innerHTML = iss;
+    cta.className = 'cta';
+    document.getElementById('r-cta-sub').textContent = '내 몸을 스스로 이해하고 함께 관리하기 위해';
+    document.getElementById('r-cta-main').textContent = '→ 웰니스PT 상담 신청';
+  }
+}
+
+function restart() {
+  cur = 0; hist = [];
+  var keys = Object.keys(sc);
+  for (var k = 0; k < keys.length; k++) sc[keys[k]] = 0;
+  document.getElementById('quiz-view').style.display = 'block';
+  document.getElementById('result-view').style.display = 'none';
+  render();
+}
+
+render();
+</script>
