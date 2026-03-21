@@ -1,32 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>내 몸의 약점은 어디일까? — 웰니스 유형 테스트</title>
 <style>
-/* 아임웹 wrapper 완전 초기화 */
-.imweb-widget-code { padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; }
-.imweb-widget-code > div { padding: 0 !important; margin: 0 !important; width: 100% !important; }
-
-/* 유형테스트 wrapper */
-#wt-outer {
-  background: #f7f6f2;
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 40px 20px 80px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f7f6f2; color: #1a1a1a; }
+body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f7f6f2; color: #1a1a1a; min-height: 100vh; display: flex; justify-content: center; padding: 40px 20px 80px; }
 .wrap { max-width: 520px; width: 100%; }
 .badge { display: inline-block; background: #f0f7f4; color: #2d5a4e; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
 .header { text-align: center; margin-bottom: 2rem; }
 .title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
 .sub { font-size: 13px; color: #888; }
 .progress { margin-bottom: 1.75rem; }
-.progress-row { display: flex !important; justify-content: space-between !important; align-items: center !important; font-size: 12px; color: #888; margin-bottom: 8px; width: 100%; }
+.progress-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #888; margin-bottom: 8px; }
 .back-btn { background: none; border: none; cursor: pointer; font-size: 13px; color: #888; padding: 0; }
 .back-btn:disabled { opacity: 0.3; cursor: default; }
-.bar-bg { height: 2px !important; max-height: 2px !important; background: #e8e4dc; border-radius: 4px; align-self: center; overflow: hidden; }
+.bar-bg { height: 4px; background: #e8e4dc; border-radius: 4px; }
 .bar { height: 4px; background: #2d5a4e; border-radius: 4px; transition: width 0.4s; }
 .category { font-size: 11px; color: #4a8c6e; font-weight: 600; letter-spacing: 1px; margin-bottom: 8px; }
 .question { font-size: 16px; font-weight: 700; line-height: 1.65; margin-bottom: 1.25rem; }
@@ -56,10 +46,9 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
 .good-msg { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 10px; text-align: center; border: 1.5px solid #c8e6d8; }
 .good-title { font-size: 15px; font-weight: 700; color: #2d5a4e; margin-bottom: 6px; }
 .good-desc { font-size: 13px; color: #4a6e5a; line-height: 1.7; }
-
 </style>
-
-<div id="wt-outer">
+</head>
+<body>
 <div class="wrap">
 
   <div id="quiz-view">
@@ -71,9 +60,9 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
     <div class="progress">
       <div class="progress-row">
         <button class="back-btn" id="back-btn" onclick="goBack()" disabled>← 이전</button>
-        <div class="bar-bg" style="flex:1; margin: 0 10px;"><div class="bar" id="prog-bar" style="width:6.25%"></div></div>
         <span id="q-count">1 / 16</span>
       </div>
+      <div class="bar-bg"><div class="bar" id="prog-bar" style="width:6.25%"></div></div>
     </div>
     <div class="category" id="q-category"></div>
     <div class="question" id="q-text"></div>
@@ -109,8 +98,6 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
   </div>
 
 </div>
-</div>
-
 <script>
 var qs = [
   {cat:"💤 수면", text:"아침에 일어날 때 어떤가요?", opts:[
@@ -311,3 +298,5 @@ function restart() {
 
 render();
 </script>
+</body>
+</html>
