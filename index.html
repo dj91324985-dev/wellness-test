@@ -10,25 +10,45 @@
 <meta property="og:url" content="https://wellnesspt.kr/test">
 <meta name="description" content="16가지 질문으로 알아보는 나의 웰니스 유형 — 약사가 만든 무료 테스트">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f7f6f2; color: #1a1a1a; min-height: 100vh; display: flex; justify-content: center; padding: 40px 20px 80px; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #f7f6f2; color: #1a1a1a; min-height: 100vh; display: -webkit-flex; display: flex; -webkit-justify-content: center; justify-content: center; padding: 40px 20px 80px; }
 .wrap { max-width: 520px; width: 100%; }
 .badge { display: inline-block; background: #f0f7f4; color: #2d5a4e; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; margin-bottom: 12px; }
 .header { text-align: center; margin-bottom: 2rem; }
-.title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.title { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; }
 .sub { font-size: 13px; color: #888; }
 .progress { margin-bottom: 1.75rem; }
-.progress-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #888; margin-bottom: 8px; }
-.back-btn { background: none; border: none; cursor: pointer; font-size: 13px; color: #888; padding: 0; }
+.progress-row { display: -webkit-flex; display: flex; -webkit-justify-content: space-between; justify-content: space-between; -webkit-align-items: center; align-items: center; font-size: 12px; color: #888; margin-bottom: 8px; }
+.back-btn { -webkit-appearance: none; appearance: none; background: none; border: none; cursor: pointer; font-size: 13px; color: #888; padding: 0; font-family: inherit; }
 .back-btn:disabled { opacity: 0.3; cursor: default; }
 .bar-bg { height: 4px; background: #e8e4dc; border-radius: 4px; }
-.bar { height: 4px; background: #2d5a4e; border-radius: 4px; transition: width 0.4s; }
+.bar { height: 4px; background: #2d5a4e; border-radius: 4px; -webkit-transition: width 0.4s; transition: width 0.4s; }
 .category { font-size: 11px; color: #4a8c6e; font-weight: 600; letter-spacing: 1px; margin-bottom: 8px; }
-.question { font-size: 16px; font-weight: 700; line-height: 1.65; margin-bottom: 1.25rem; }
-.options { display: flex; flex-direction: column; gap: 8px; }
-.opt { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 14px; border: 1.5px solid #e8e4dc; background: white; cursor: pointer; font-size: 14px; text-align: left; line-height: 1.5; width: 100%; }
-.opt:hover { border-color: #4a8c6e; background: #f6fbf8; }
-.opt-icon { width: 28px; height: 28px; border-radius: 50%; background: #f0f7f4; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.question { font-size: 16px; font-weight: 700; line-height: 1.65; margin-bottom: 1.25rem; color: #1a1a1a; }
+.options { display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; gap: 8px; }
+.opt {
+  -webkit-appearance: none;
+  appearance: none;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1.5px solid #e8e4dc;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  color: #1a1a1a;
+  -webkit-text-fill-color: #1a1a1a;
+  text-align: left;
+  line-height: 1.5;
+  width: 100%;
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+.opt:active { border-color: #4a8c6e; background: #f6fbf8; }
+.opt-icon { width: 28px; height: 28px; border-radius: 50%; background: #f0f7f4; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; font-size: 14px; -webkit-flex-shrink: 0; flex-shrink: 0; }
 .result { display: none; }
 .result-top { text-align: center; padding: 1.75rem 1.25rem 1.25rem; background: #f0f7f4; border-radius: 18px; margin-bottom: 1rem; }
 .result-top.good { background: #eaf3f0; }
@@ -37,16 +57,16 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
 .result-desc { font-size: 13px; color: #4a6e5a; line-height: 1.7; }
 .card { border-radius: 14px; border: 1.5px solid #e8e4dc; background: white; padding: 1rem 1.25rem; margin-bottom: 10px; }
 .card-title { font-size: 12px; color: #888; font-weight: 600; margin-bottom: 10px; }
-.card-item { font-size: 14px; padding: 4px 0; display: flex; align-items: center; gap: 8px; }
-.dot-green { width: 6px; height: 6px; border-radius: 50%; background: #4a8c6e; flex-shrink: 0; }
-.dot-amber { width: 6px; height: 6px; border-radius: 50%; background: #c47c3f; flex-shrink: 0; }
-.cta { background: #2d5a4e; color: white; border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; border: none; width: 100%; cursor: pointer; }
+.card-item { font-size: 14px; color: #1a1a1a; padding: 4px 0; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; gap: 8px; }
+.dot-green { width: 6px; height: 6px; border-radius: 50%; background: #4a8c6e; -webkit-flex-shrink: 0; flex-shrink: 0; }
+.dot-amber { width: 6px; height: 6px; border-radius: 50%; background: #c47c3f; -webkit-flex-shrink: 0; flex-shrink: 0; }
+.cta { -webkit-appearance: none; appearance: none; background: #2d5a4e; color: #ffffff; -webkit-text-fill-color: #ffffff; border-radius: 14px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; border: none; width: 100%; cursor: pointer; font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
 .cta.soft { background: #f0f7f4; }
-.cta-sub { font-size: 12px; opacity: 0.7; margin-bottom: 4px; }
-.cta.soft .cta-sub { color: #4a6e5a; opacity: 1; }
-.cta-main { font-size: 15px; font-weight: 700; }
-.cta.soft .cta-main { color: #2d5a4e; }
-.restart-btn { width: 100%; padding: 12px; font-size: 14px; cursor: pointer; border-radius: 12px; color: #888; background: transparent; border: 1.5px solid #e8e4dc; }
+.cta-sub { font-size: 12px; opacity: 0.7; margin-bottom: 4px; color: #ffffff; -webkit-text-fill-color: #ffffff; }
+.cta.soft .cta-sub { color: #4a6e5a; -webkit-text-fill-color: #4a6e5a; opacity: 1; }
+.cta-main { font-size: 15px; font-weight: 700; color: #ffffff; -webkit-text-fill-color: #ffffff; }
+.cta.soft .cta-main { color: #2d5a4e; -webkit-text-fill-color: #2d5a4e; }
+.restart-btn { -webkit-appearance: none; appearance: none; width: 100%; padding: 12px; font-size: 14px; cursor: pointer; border-radius: 12px; color: #888; -webkit-text-fill-color: #888; background: transparent; border: 1.5px solid #e8e4dc; font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
 .emoji { font-size: 36px; margin-bottom: 8px; }
 .good-msg { background: white; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 10px; text-align: center; border: 1.5px solid #c8e6d8; }
 .good-title { font-size: 15px; font-weight: 700; color: #2d5a4e; margin-bottom: 6px; }
@@ -55,7 +75,6 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
 </head>
 <body>
 <div class="wrap">
-
   <div id="quiz-view">
     <div class="header">
       <div class="badge">웰니스 유형 테스트</div>
@@ -64,7 +83,7 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
     </div>
     <div class="progress">
       <div class="progress-row">
-        <button class="back-btn" id="back-btn" onclick="goBack()" disabled>← 이전</button>
+        <button class="back-btn" id="back-btn" type="button" onclick="goBack()" disabled>← 이전</button>
         <span id="q-count">1 / 16</span>
       </div>
       <div class="bar-bg"><div class="bar" id="prog-bar" style="width:6.25%"></div></div>
@@ -73,7 +92,6 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
     <div class="question" id="q-text"></div>
     <div class="options" id="q-options"></div>
   </div>
-
   <div class="result" id="result-view">
     <div class="result-top" id="r-top">
       <div class="emoji" id="r-emoji"></div>
@@ -95,13 +113,12 @@ body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; backgrou
         <div id="r-issues"></div>
       </div>
     </div>
-    <button class="cta" id="r-cta" onclick="window.location.href='https://wellnesspt.kr'">
+    <button class="cta" type="button" id="r-cta" onclick="window.location.href='https://wellnesspt.kr'">
       <div class="cta-sub" id="r-cta-sub"></div>
       <div class="cta-main" id="r-cta-main"></div>
     </button>
-    <button class="restart-btn" onclick="restart()">↩ 다시 테스트하기</button>
+    <button class="restart-btn" type="button" onclick="restart()">↩ 다시 테스트하기</button>
   </div>
-
 </div>
 <script>
 var qs = [
@@ -204,21 +221,21 @@ var qs = [
 ];
 
 var types = {
-  cortisol: {good:false, emoji:"🌙", name:'"코르티솔 과부하형"', label:"높은 확률로 당신은", desc:"낮에 처지고 밤에 각성되는, 호르몬 리듬이 뒤집힌 타입이에요.", symptoms:["만성피로","저녁 각성","수면 장애"], issues:["코르티솔 리듬 역전","장 점막 손상 진행","마그네슘 고갈"]},
-  gut: {good:false, emoji:"🌿", name:'"장-면역 불균형형"', label:"높은 확률로 당신은", desc:"장이 보내는 신호를 몸 전체가 받고 있는 타입이에요.", symptoms:["소화 불편","잦은 트러블","면역 과반응"], issues:["장내 dysbiosis","장 투과성 증가","전신 염증 신호"]},
-  autonomic: {good:false, emoji:"🫀", name:'"자율신경 긴장형"', label:"높은 확률로 당신은", desc:"쉬어도 쉰 것 같지 않은, 몸이 긴장을 못 푸는 타입이에요.", symptoms:["만성 변비","생리통","자고 나도 피곤함"], issues:["교감신경 만성 긴장","장 연동운동 저하","회복 효율 저하"]},
-  blood_sugar: {good:false, emoji:"🍯", name:'"혈당 불안정형"', label:"높은 확률로 당신은", desc:"오후 피곤함과 단 음식 갈망이 반복되는 타입이에요.", symptoms:["오후 급격한 피로","단 음식 강한 갈망","식후 졸림"], issues:["인슐린 저항 초기","에너지 대사 불안정","부신 과부하"]},
-  mito: {good:false, emoji:"⚡", name:'"미토콘드리아 기능 저하형"', label:"높은 확률로 당신은", desc:"특별한 문제는 없는데, 왜 이렇게 피곤한지 모르겠는 타입이에요.", symptoms:["운동해도 변화 없음","만성 무기력","뇌 안개"], issues:["세포 에너지 생산 저하","산화 스트레스 누적","영양소 흡수 문제"]},
-  histamine: {good:false, emoji:"🌸", name:'"히스타민 과민형"', label:"높은 확률로 당신은", desc:"내 몸이 과잉반응하고 있다는 신호를 보내는 타입이에요.", symptoms:["비염·알레르기 반응","두드러기","특정 음식 민감"], issues:["DAO 효소 저하","장 점막 손상","히스타민 버킷 과부하"]},
-  inflammation: {good:false, emoji:"🔥", name:'"염증 루프형"', label:"높은 확률로 당신은", desc:"피부가 몸속 문제를 대신 말해주고 있는 타입이에요.", symptoms:["피부 트러블","두피 문제","스트레스 시 악화"], issues:["장-피부 염증 연결","전신 염증 사이토카인","항산화 방어 저하"]},
-  sleep: {good:false, emoji:"🌙", name:'"수면 리듬 역전형"', label:"높은 확률로 당신은", desc:"자도 잔 것 같지 않은, 회복이 안 되는 수면의 타입이에요.", symptoms:["잠들기 어려움","새벽 각성","아침 극도 피로"], issues:["멜라토닌 분비 지연","코르티솔 야간 잔류","회복 수면 부족"]},
-  asset: {good:true, emoji:"🌱", name:'"건강관리 우수형"', label:"당신은", desc:"지금까지 꾸준히 잘 관리해온 타입이에요. 그 노력이 몸에 쌓이고 있어요.", goodTitle:"지금까지 정말 잘 해왔어요 👏", goodDesc:"큰 문제 없이 건강을 유지하고 있다는 건 쉬운 일이 아니에요. 지금의 좋은 습관을 유지하면서, 내 몸에 더 정밀하게 맞는 관리법을 찾으면 훨씬 더 나아질 수 있어요."},
-  optimized: {good:true, emoji:"✨", name:'"웰니스 최적화형"', label:"당신은", desc:"건강 관리를 잘 하고 있는 타입이에요. 지금 패턴을 더 정밀하게 튜닝할 준비가 된 상태예요.", goodTitle:"건강 관리, 이미 잘 하고 있어요 ✨", goodDesc:"전반적으로 균형이 잡혀 있어요. 지금의 좋은 상태를 유지하면서 개인 맞춤 영양과 루틴을 더해가면, 지금보다 훨씬 더 좋아질 수 있어요."}
+  cortisol: {good:false,emoji:"🌙",name:'"코르티솔 과부하형"',label:"높은 확률로 당신은",desc:"낮에 처지고 밤에 각성되는, 호르몬 리듬이 뒤집힌 타입이에요.",symptoms:["만성피로","저녁 각성","수면 장애"],issues:["코르티솔 리듬 역전","장 점막 손상 진행","마그네슘 고갈"]},
+  gut: {good:false,emoji:"🌿",name:'"장-면역 불균형형"',label:"높은 확률로 당신은",desc:"장이 보내는 신호를 몸 전체가 받고 있는 타입이에요.",symptoms:["소화 불편","잦은 트러블","면역 과반응"],issues:["장내 dysbiosis","장 투과성 증가","전신 염증 신호"]},
+  autonomic: {good:false,emoji:"🫀",name:'"자율신경 긴장형"',label:"높은 확률로 당신은",desc:"쉬어도 쉰 것 같지 않은, 몸이 긴장을 못 푸는 타입이에요.",symptoms:["만성 변비","생리통","자고 나도 피곤함"],issues:["교감신경 만성 긴장","장 연동운동 저하","회복 효율 저하"]},
+  blood_sugar: {good:false,emoji:"🍯",name:'"혈당 불안정형"',label:"높은 확률로 당신은",desc:"오후 피곤함과 단 음식 갈망이 반복되는 타입이에요.",symptoms:["오후 급격한 피로","단 음식 강한 갈망","식후 졸림"],issues:["인슐린 저항 초기","에너지 대사 불안정","부신 과부하"]},
+  mito: {good:false,emoji:"⚡",name:'"미토콘드리아 기능 저하형"',label:"높은 확률로 당신은",desc:"열심히 사는데 왜 이렇게 피곤한지 모르겠는 타입이에요.",symptoms:["운동해도 변화 없음","만성 무기력","뇌 안개"],issues:["세포 에너지 생산 저하","산화 스트레스 누적","영양소 흡수 문제"]},
+  histamine: {good:false,emoji:"🌸",name:'"히스타민 과민형"',label:"높은 확률로 당신은",desc:"내 몸이 과잉반응하고 있다는 신호를 보내는 타입이에요.",symptoms:["비염·알레르기 반응","두드러기","특정 음식 민감"],issues:["DAO 효소 저하","장 점막 손상","히스타민 버킷 과부하"]},
+  inflammation: {good:false,emoji:"🔥",name:'"염증 루프형"',label:"높은 확률로 당신은",desc:"피부가 몸속 문제를 대신 말해주고 있는 타입이에요.",symptoms:["피부 트러블","두피 문제","스트레스 시 악화"],issues:["장-피부 염증 연결","전신 염증 사이토카인","항산화 방어 저하"]},
+  sleep: {good:false,emoji:"🌙",name:'"수면 리듬 역전형"',label:"높은 확률로 당신은",desc:"자도 잔 것 같지 않은, 회복이 안 되는 수면의 타입이에요.",symptoms:["잠들기 어려움","새벽 각성","아침 극도 피로"],issues:["멜라토닌 분비 지연","코르티솔 야간 잔류","회복 수면 부족"]},
+  asset: {good:true,emoji:"🌱",name:'"건강관리 우수형"',label:"당신은",desc:"지금까지 꾸준히 잘 관리해온 타입이에요. 그 노력이 몸에 쌓이고 있어요.",goodTitle:"지금까지 정말 잘 해왔어요 👏",goodDesc:"큰 문제 없이 건강을 유지하고 있다는 건 쉬운 일이 아니에요. 지금의 좋은 습관을 유지하면서, 내 몸에 더 정밀하게 맞는 관리법을 찾으면 훨씬 더 나아질 수 있어요."},
+  optimized: {good:true,emoji:"✨",name:'"웰니스 최적화형"',label:"당신은",desc:"건강 관리를 잘 하고 있는 타입이에요. 지금 패턴을 더 정밀하게 튜닝할 준비가 된 상태예요.",goodTitle:"건강 관리, 이미 잘 하고 있어요 ✨",goodDesc:"전반적으로 균형이 잡혀 있어요. 지금의 좋은 상태를 유지하면서 개인 맞춤 영양과 루틴을 더해가면, 지금보다 훨씬 더 좋아질 수 있어요."}
 };
 
 var cur = 0;
 var hist = [];
-var sc = {cortisol:0, gut:0, autonomic:0, blood_sugar:0, mito:0, histamine:0, inflammation:0, sleep:0, asset:0, optimized:0};
+var sc = {cortisol:0,gut:0,autonomic:0,blood_sugar:0,mito:0,histamine:0,inflammation:0,sleep:0,asset:0,optimized:0};
 
 function render() {
   var q = qs[cur];
@@ -230,13 +247,18 @@ function render() {
   bb.disabled = cur === 0;
   bb.style.opacity = cur === 0 ? '0.3' : '1';
   var icons = ['🅐','🅑','🅒','🅓'];
-  var c = document.getElementById('q-options');
-  c.innerHTML = '';
+  // DOM 노드 완전 교체 — 사파리 버튼 상태 초기화
+  var oldC = document.getElementById('q-options');
+  var newC = document.createElement('div');
+  newC.className = 'options';
+  newC.id = 'q-options';
+  oldC.parentNode.replaceChild(newC, oldC);
   for (var i = 0; i < q.opts.length; i++) {
     (function(opt, idx) {
       var btn = document.createElement('button');
       btn.className = 'opt';
-      btn.innerHTML = '<span class="opt-icon">' + icons[idx] + '</span><span>' + opt.t + '</span>';
+      btn.type = 'button';
+      btn.innerHTML = '<span class="opt-icon">' + icons[idx] + '</span><span style="color:#1a1a1a;-webkit-text-fill-color:#1a1a1a">' + opt.t + '</span>';
       btn.onclick = function() {
         hist.push({q: cur, s: opt.s});
         var keys = Object.keys(opt.s);
@@ -244,7 +266,7 @@ function render() {
         cur++;
         if (cur < qs.length) render(); else showResult();
       };
-      c.appendChild(btn);
+      newC.appendChild(btn);
     })(q.opts[i], i);
   }
 }
@@ -282,9 +304,11 @@ function showResult() {
   } else {
     document.getElementById('r-good-msg').style.display = 'none';
     document.getElementById('r-cards').style.display = 'block';
-    var sym = ''; for (var i=0; i<t.symptoms.length; i++) sym += '<div class="card-item"><span class="dot-green"></span>' + t.symptoms[i] + '</div>';
+    var sym = '';
+    for (var i=0;i<t.symptoms.length;i++) sym += '<div class="card-item"><span class="dot-green"></span><span style="color:#1a1a1a;-webkit-text-fill-color:#1a1a1a">' + t.symptoms[i] + '</span></div>';
     document.getElementById('r-symptoms').innerHTML = sym;
-    var iss = ''; for (var i=0; i<t.issues.length; i++) iss += '<div class="card-item"><span class="dot-amber"></span>' + t.issues[i] + '</div>';
+    var iss = '';
+    for (var i=0;i<t.issues.length;i++) iss += '<div class="card-item"><span class="dot-amber"></span><span style="color:#1a1a1a;-webkit-text-fill-color:#1a1a1a">' + t.issues[i] + '</span></div>';
     document.getElementById('r-issues').innerHTML = iss;
     cta.className = 'cta';
     document.getElementById('r-cta-sub').textContent = '내 몸을 스스로 이해하고 함께 관리하기 위해';
@@ -295,7 +319,7 @@ function showResult() {
 function restart() {
   cur = 0; hist = [];
   var keys = Object.keys(sc);
-  for (var k = 0; k < keys.length; k++) sc[keys[k]] = 0;
+  for (var k=0;k<keys.length;k++) sc[keys[k]] = 0;
   document.getElementById('quiz-view').style.display = 'block';
   document.getElementById('result-view').style.display = 'none';
   render();
